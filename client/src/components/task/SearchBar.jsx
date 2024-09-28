@@ -1,24 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 
 const SearchBar = () => {
-  const [query, setQuery] = useState("");
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    // Implement search logic based on the query
-  };
-
-  return (
-    <form onSubmit={handleSearch}>
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search tasks..."
-      />
-      <button type="submit">Search</button>
-    </form>
-  );
+  return <input type="text" placeholder="Search" className="search-bar" />;
 };
 
 export default SearchBar;

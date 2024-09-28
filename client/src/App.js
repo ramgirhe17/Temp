@@ -1,22 +1,4 @@
 
-// import './App.css';
-
-// // components
-// import Header from './components/Header';
-// import TodoForm from './components/TodoForm';
-// import Todos from './components/Todos';
-
-// function App() {
-//   return (
-//     <div>
-//       <Header />
-//       <TodoForm />
-//       <Todos />
-//     </div>
-//   );
-// }
-
-// export default App;
 
 import React, { useState, useEffect } from "react";
 import TaskList from "./components/task/TaskList.jsx";
@@ -27,6 +9,7 @@ import "./App.css";
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
+  const [showTaskForm, setShowTaskForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
 
   const fetchTasks = async () => {
@@ -70,19 +53,41 @@ const App = () => {
   }, []);
 
   return (
-    <div className="container">
-      <h1>Task Manager</h1>
+    <div >
+           <h1>Tasks</h1>
       <SearchBar />
-      <TaskForm
-        initialTask={editingTask}
-        onSubmit={(task) =>
-          editingTask
-            ? updateTask(editingTask._id, task)
-            : createTask(task)
-        }
-        onClear={() => setEditingTask(null)}
-      />
-      <TaskList tasks={tasks} onDelete={deleteTask} onEdit={setEditingTask} />
+      <button
+        className="btn"
+        onClick={() => {
+          setEditingTask(null); // Reset editing state
+          setShowTaskForm(!showTaskForm); // Toggle form visibility
+        }}
+      >
+        {showTaskForm ? "Cancel" : "New Task"}
+      </button>
+      <button className="btn" onClick={fetchTasks}>
+        Refresh
+      </button>
+      {showTaskForm && (
+         <TaskForm
+         initialTask={editingTask}
+         onSubmit={(task) =>
+           editingTask
+             ? updateTask(editingTask._id, task)
+             : createTask(task)
+         }
+         onSave={() => setShowTaskForm(false)}
+         onClear={() =>{ setEditingTask(null)
+          setShowTaskForm(false)
+         }}
+         showFrom={showTaskForm}
+       />
+      )}
+     
+      <div>
+        <hr/>
+      </div>
+      <TaskList tasks={tasks} onDelete={deleteTask} onEdit={setEditingTask} onSave={setShowTaskForm} />
     </div>
   );
 };
